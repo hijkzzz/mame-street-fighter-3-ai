@@ -241,6 +241,13 @@ def main():
                         writer.add_scalar('data/sample_episode',
                                           sample_episode, global_update)
 
+                        if np.mean(sample_max_stages) >= best_mean_stage:
+                            print('Saved models... {}'.format(global_update))
+                            best_mean_stage = np.mean(sample_max_stages)
+                            
+                            torch.save(model.state_dict(), model_path)
+                            torch.save(model_optimizer.state_dict(), optimizer_path)
+                            
         # last step obs
         total_obs[-1, :] = obs
 
@@ -264,13 +271,6 @@ def main():
         writer.add_scalar('train/actor_loss', actor_loss, global_update)
         writer.add_scalar('train/critic_loss', critic_loss, global_update)
         writer.add_scalar('train/entropy', entropy, global_update)
-
-        if np.mean(sample_max_stages) >= best_mean_stage:
-            print('Saved models... {}'.format(global_update))
-            best_mean_stage = np.mean(sample_max_stages)
-            
-            torch.save(model.state_dict(), model_path)
-            torch.save(model_optimizer.state_dict(), optimizer_path)
 
 
 if __name__ == '__main__':
