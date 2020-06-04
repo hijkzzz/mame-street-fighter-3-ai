@@ -168,6 +168,7 @@ def main():
     sample_max_stage = np.ones(args.num_worker)
 
     latest_dones = collections.deque(maxlen=args.num_worker)
+    best_mean_stage = 1
 
     # data
     total_obs = np.zeros((args.num_step + 1, args.num_worker) + feature_shape)
@@ -264,8 +265,10 @@ def main():
         writer.add_scalar('train/critic_loss', critic_loss, global_update)
         writer.add_scalar('train/entropy', entropy, global_update)
 
-        if global_update % args.save_interval == 0:
+        if np.mean(sample_max_stages) >= best_mean_stage:
             print('Saved models... {}'.format(global_update))
+            best_mean_stage = np.mean(sample_max_stages)
+            
             torch.save(model.state_dict(), model_path)
             torch.save(model_optimizer.state_dict(), optimizer_path)
 

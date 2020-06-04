@@ -1,5 +1,5 @@
 # Reinforcemen Learning for Street Fighter III: 3rd Strike
-In this project, we use the Macro-based Reinforcement Learning algorithm to challenge the Street Fighter 3 game. We combine the important reinforcement learning algorithms such as PPO, A2C, NoisyNet, etc., and have achieved good results, through the 5th level of the game(difficulty = 7 = Highest Difficulty).
+In this project, we use the Macro-based Reinforcement Learning algorithm to challenge the Street Fighter 3 game. We combine the important reinforcement learning algorithms such as PPO, A2C, NoisyNet, etc., and have achieved good results, reach level 7 of the game(difficulty = 7 = Highest Difficulty).
 
 ## Prerequisites
 - PyTorch==1.5
@@ -31,6 +31,10 @@ When testing the code, the program will automatically record the game and output
 ```
 python eval.py
 ```
+
+## Best Result(600 Episodes)
+Reach Level 7
+![](./max_stage.png)
 
 ## Macro
 ![](./macro.png)
