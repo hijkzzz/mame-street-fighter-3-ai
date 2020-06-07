@@ -7,8 +7,8 @@ def get_args():
     parser = argparse.ArgumentParser(description='RL')
     parser.add_argument('--lr', type=float, default=1e-4,
                         help='Learning rate (default: 1e-4)')
-    parser.add_argument('--num-worker', type=int, default=8,
-                        help='Number of workers (CPU processes) to use (default: 8)')
+    parser.add_argument('--num-worker', type=int, default=16,
+                        help='Number of workers (CPU processes) to use (default: 16)')
     parser.add_argument('--difficulty', type=int, default=7,
                         help='difficulty for Curriculum learning')
     parser.add_argument('--macro', type=ast.literal_eval, default=True,
@@ -23,22 +23,22 @@ def get_args():
                         help='Extrinsic discount factor for rewards (default: 0.999)')
     parser.add_argument('--eps', type=float, default=0.1,
                         help='Clip (default: 0.1)')
-    parser.add_argument('--weight-decay', type=float, default=1e-5,
-                        help='L2 (default: 1e-5)')
+    parser.add_argument('--weight-decay', type=float, default=1e-4,
+                        help='L2 (default: 1e-4)')
     parser.add_argument('--use-gae', action='store_true', default=True,
                         help='use generalized advantage estimation (default: True)')
     parser.add_argument("--gae-lambda", type=float, default=0.95,
                         help="Lambda coefficient in GAE formula (default: 0.95, 1 means no gae)")
     parser.add_argument('--no-cuda', action='store_true', default=False,
                         help='Use GPU training (default: True)')
-    parser.add_argument('--epoch', type=int, default=2,
-                        help='number of epochs (default: 2)')
+    parser.add_argument('--epoch', type=int, default=3,
+                        help='number of epochs (default: 3)')
     parser.add_argument('--max-grad-norm', type=float, default=50,
                         help='number of epochs (default: 50)')
     parser.add_argument('--rew-norm', type=bool, default=False,
                         help='reward normalization (default: False)')
-    parser.add_argument('--batch-size', type=int, default=256,
-                        help='batch size (default: 256)')
+    parser.add_argument('--batch-size', type=int, default=512,
+                        help='batch size (default: 512)')
     parser.add_argument('--entropy-coef', type=float, default=1e-3,
                         help='entropy term coefficient (default: 1e-3)')
     parser.add_argument('--noise-linear', type=bool, default=True,

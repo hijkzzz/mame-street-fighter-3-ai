@@ -32,10 +32,10 @@ class Monitor(object):
 def process_frame(frame):
     if frame is not None:
         # frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
-        frame = cv2.resize(frame, (168, 168)) / 255.
+        frame = cv2.resize(frame, (128, 128)) / 255.
         return frame.transpose((2, 0, 1))
     else:
-        return np.zeros((168, 168))
+        return np.zeros((128, 128))
 
 
 class StreetFighterEnv(gym.Env):
@@ -50,11 +50,10 @@ class StreetFighterEnv(gym.Env):
             self.monitor = None
         self.env.start()
 
-        self.last_action = 8
         self.action_space = gym.spaces.Discrete(90)
         self.observation_space = gym.spaces.Box(low=0,
                                                 high=1,
-                                                shape=(3 + self.action_space.n, 168, 168),
+                                                shape=(3 + self.action_space.n, 128, 128),
                                                 dtype=np.float32)
 
     def step(self, action):
@@ -71,12 +70,10 @@ class StreetFighterEnv(gym.Env):
         
         if not (round_done or stage_done or game_done):
             states[:3, :] = process_frame(frames[-1])
-            self.last_action = action
         else:
             self.env.reset()
-            self.last_action = 8
-            
-        states[self.last_action + 3, :] = 1
+            action = 80
+        states[action + 3, :] = 1
 
         reward = reward["P1"] / 10
         if stage_done:
@@ -94,9 +91,8 @@ class StreetFighterEnv(gym.Env):
     def reset(self):
         self.env.new_game()
         
-        self.last_action = 8
         states = np.zeros(self.observation_space.shape, dtype=np.float32)
-        states[self.last_action + 3, :] = 1
+        states[80 + 3, :] = 1
         return states
 
     def __exit__(self, *args):
@@ -115,11 +111,10 @@ class MacroStreetFighterEnv(gym.Env):
             self.monitor = None
         self.env.start()
         
-        self.last_action = 8
         self.action_space = gym.spaces.Discrete(18 + MACRO_NUMS)
         self.observation_space = gym.spaces.Box(low=0,
                                                 high=1,
-                                                shape=(3 + self.action_space.n, 168, 168),
+                                                shape=(3 + self.action_space.n, 128, 128),
                                                 dtype=np.float32)
 
     def step(self, action):
@@ -133,12 +128,11 @@ class MacroStreetFighterEnv(gym.Env):
         
         if not (round_done or stage_done or game_done):
             states[:3, :] = process_frame(frames[-1])
-            self.last_action = action
         else:
             self.env.reset()
-            self.last_action = 8
+            action = 8
             
-        states[self.last_action + 3, :] = 1
+        states[action + 3, :] = 1
 
         reward = reward["P1"] / 10
         if stage_done:
@@ -206,9 +200,8 @@ class MacroStreetFighterEnv(gym.Env):
     def reset(self):
         self.env.new_game()
         
-        self.last_action = 8
         states = np.zeros(self.observation_space.shape, dtype=np.float32)
-        states[self.last_action + 3, :] = 1
+        states[8 + 3, :] = 1
         return states
 
     def __exit__(self, *args):

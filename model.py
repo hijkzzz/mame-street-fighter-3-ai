@@ -11,7 +11,7 @@ import rnn
 
 class NoisyLinear(nn.Module):
     """Factorised Gaussian NoisyNet"""
-    def __init__(self, in_features, out_features, sigma0=1):
+    def __init__(self, in_features, out_features, sigma0=0.5):
         super().__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -65,22 +65,20 @@ class NoisyLinear(nn.Module):
 class BaseConv(nn.Module):
     def __init__(self, in_size, noise_linear=False):
         super(BaseConv, self).__init__()
-        self.conv = nn.Sequential(nn.Conv2d(in_size, 32, 3, stride=2),
+        self.conv = nn.Sequential(nn.Conv2d(in_size, 32, 3, stride=2), 
                                   nn.BatchNorm2d(32), nn.ReLU(inplace=True),
                                   nn.Conv2d(32, 64, 3, stride=2),
                                   nn.BatchNorm2d(64), nn.ReLU(inplace=True),
                                   nn.Conv2d(64, 128, 3, stride=2),
                                   nn.BatchNorm2d(128), nn.ReLU(inplace=True),
-                                  nn.Conv2d(128, 128, 3, stride=2),
-                                  nn.BatchNorm2d(128), nn.ReLU(inplace=True),
-                                  nn.Conv2d(128, 128, 3, stride=1),
-                                  nn.BatchNorm2d(128), nn.ReLU(inplace=True),
-                                  nn.Conv2d(128, 128, 3, stride=1),
-                                  nn.BatchNorm2d(128), nn.ReLU(inplace=True),
-                                  nn.Conv2d(128, 128, 3, stride=1),
-                                  nn.BatchNorm2d(128), nn.ReLU(inplace=True),
-                                  nn.Conv2d(128, 128, 2, stride=1),
-                                  nn.BatchNorm2d(128), nn.ReLU(inplace=True))
+                                  nn.Conv2d(128, 256, 3, stride=2),
+                                  nn.BatchNorm2d(256), nn.ReLU(inplace=True),
+                                  nn.Conv2d(256, 256, 3, stride=1),
+                                  nn.BatchNorm2d(256), nn.ReLU(inplace=True),
+                                  nn.Conv2d(256, 256, 3, stride=1),
+                                  nn.BatchNorm2d(256), nn.ReLU(inplace=True),
+                                  nn.Conv2d(256, 512, 3, stride=1),
+                                  nn.BatchNorm2d(512), nn.ReLU(inplace=True))
 
     def forward(self, x):
         if len(x.shape) == 5:
@@ -107,11 +105,11 @@ class RNNActorCriticNetwork(nn.Module):
 
         self.conv = BaseConv(num_inputs)
         self.rnn = rnn.GRU(512, 1024)
-        self.critic_linear = nn.Sequential(linear(1024, 256),
+        self.critic_linear = nn.Sequential(linear(1024, 512),
                                            nn.ReLU(inplace=True),
-                                           linear(256, 1))
-        self.actor = nn.Sequential(linear(1024, 256), nn.ReLU(inplace=True),
-                                   linear(256, num_actions), nn.Softmax(dim=2))
+                                           linear(512, 1))
+        self.actor = nn.Sequential(linear(1024, 512), nn.ReLU(inplace=True),
+                                   linear(512, num_actions), nn.Softmax(dim=2))
 
     def forward(self, x, hidden=None, masks=None):
         x = self.conv(x)
