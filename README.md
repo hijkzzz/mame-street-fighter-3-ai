@@ -2,7 +2,7 @@
 In this project, we use the Macro-based Reinforcement Learning algorithm to challenge the Street Fighter 3 game. We combine the important reinforcement learning algorithms such as PPO, A2C, NoisyNet, etc., and have achieved good results, reach level 7 of the game(difficulty = 7 = Highest Difficulty).
 
 ## Prerequisites
-- PyTorch==1.5
+- PyTorch==1.4
 - MAMEToolkit==1.1.0
 - gym
 - tensorboard
