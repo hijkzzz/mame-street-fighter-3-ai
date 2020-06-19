@@ -21,6 +21,7 @@ sudo apt-get install xvfb
 We start 8 processes at the same time to obtain game data, and then use a 8-layer convolutional network and GRU learning strategy.
 
 ```
+Xvfb :1 -screen 0 800x600x16 +extension RANDR &
 python train.py
 tensorboard --logdir log --host 0.0.0.0
 ```
@@ -29,6 +30,7 @@ tensorboard --logdir log --host 0.0.0.0
 When testing the code, the program will automatically record the game and output to `env1.mp4`.
 
 ```
+Xvfb :1 -screen 0 800x600x16 +extension RANDR &
 python eval.py
 ```
 
