@@ -37,7 +37,7 @@ def main():
         model.load_state_dict(torch.load(model_path))
     else:
         model.load_state_dict(torch.load(model_path, map_location='cpu'))
-    
+
     model.eval()
     print('Testing...')
 
@@ -54,6 +54,7 @@ def main():
         action, _, action_probs, hidden = get_action(model, device,
                                                      obs[None,
                                                          None, :], hidden)
+        action = np.argmax(action_probs)
         obs, rew, done, info = env.step(int(action))
 
         sample_rall += rew
