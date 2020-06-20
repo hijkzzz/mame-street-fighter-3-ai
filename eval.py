@@ -54,7 +54,6 @@ def main():
         action, _, action_probs, hidden = get_action(model, device,
                                                      obs[None,
                                                          None, :], hidden)
-        action = np.argmax(action_probs)
         obs, rew, done, info = env.step(int(action))
 
         sample_rall += rew
